@@ -1,0 +1,269 @@
+<!-- client/index.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Search</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        #navbar {
+            background-color: #333;
+            padding: 10px;
+            text-align: center;
+            color: white;
+        }
+
+        #website_title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-right: 20px;
+            display: inline-block;
+        }
+
+        #navbar a {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        #searchInput {
+            padding: 5px;
+            margin-right: 5px;
+        }
+
+        #search_button {
+            padding: 5px 10px;
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            cursor: pointer;
+        }
+
+        #search_result_area {
+            padding: 20px;
+        }
+
+        .search-result {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        #other_buttons {
+            background-color: #f4f4f4;
+            padding: 10px;
+            text-align: center;
+        }
+
+        #displaylte150Cars {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            cursor: pointer;
+        }
+
+        a {
+            text-decoration: none;
+            color: #333;
+        }
+    </style>
+</head>
+
+</head>
+
+<!--CSS STYLE HERE, UNABLE TO CONNECT TO SEPARATE CSS FILE-->
+
+<body>
+    <div id="navbar">
+
+        <div id="website_title">CarSalesManagement</div>
+        <a href="#" onclick="showToyotaCars()">Toyota</a>
+        <a href="#" onclick="showOpelCars()">Opel</a>
+        <a href="#" onclick="showMitsubishiCars()">Mitsubishi</a>
+        <a href="#" onclick="showNissanCars()">Nissan</a>
+        <a href="#" onclick="showFordCars()">Ford</a>
+        <a href="#" onclick="showAllCars()">Show All</a>
+        
+        
+        
+            <input type="text" id="searchInput" placeholder="Search for cars...">
+        <button id="search_button" onclick="searchbar()">Search</button>
+    </div>
+
+
+
+        <!-- Filter checkboxes -->
+        <div id="filter_options">
+            <label><input type="checkbox" id="hand_2nd_hand"> Hand: 2nd hand</label>
+            <label><input type="checkbox" id="hand_new"> Hand: New</label><br>
+            <label><input type="checkbox" id="price_500k"> Price: 500k and below</label>
+            <label><input type="checkbox" id="price_350k"> Price: 350k and below</label>
+            <label><input type="checkbox" id="price_250k"> Price: 250k and below</label><br>
+            <label><input type="checkbox" id="brand_toyota"> Brand: Toyota</label>
+            <label><input type="checkbox" id="brand_nissan"> Brand: Nissan</label>
+            <label><input type="checkbox" id="brand_ford"> Brand: Ford</label>
+            <label><input type="checkbox" id="brand_opel"> Brand: Opel</label>
+            <label><input type="checkbox" id="brand_mitsubishi"> Brand: Mitsubishi</label>
+        </div>
+    
+        <!-- Submit button -->
+        <button id="filter_button" onclick="filterCars()">Filter</button>
+
+     
+    <div id="search_result_area">
+        <div id="searchResults"></div>
+    </div>
+    
+    <div id="other_buttons">
+        <button id="displaylte150Cars" onclick="displaylte150Cars()">Display ars below 150k</button> 
+        <a href="updatecars">Update Cars</button>
+        <a href="deletecars">Delete Cars</button>
+    <a href="addcars">Add Cars</a>
+    </div>
+    
+
+
+<!-- SCRIPTS HERE, UNABLE TO CONNECT TO A SEPARATE JAVASCRIPT FILE -->
+    <script>
+        //FUNCTION FOR SEARCH BAR
+        function searchbar() {
+    const searchInput = document.getElementById('searchInput').value;
+    const intSearchInput = parseInt(searchInput);
+    console.log(intSearchInput);
+    
+    let query = 'database/search?';
+
+    const hand_2nd_hand = document.getElementById('hand_2nd_hand').checked;
+    const hand_new = document.getElementById('hand_new').checked;
+    const price_500k = document.getElementById('price_500k').checked;
+    const price_350k = document.getElementById('price_350k').checked;
+    const price_250k = document.getElementById('price_250k').checked;
+    const brand_toyota = document.getElementById('brand_toyota').checked;
+    const brand_nissan = document.getElementById('brand_nissan').checked;
+    const brand_ford = document.getElementById('brand_ford').checked;
+    const brand_opel = document.getElementById('brand_opel').checked;
+    const brand_mitsubishi = document.getElementById('brand_mitsubishi').checked;
+
+    if (hand_2nd_hand) query += 'hand=2nd&';
+    if (hand_new) query += 'hand=New&';
+
+    if (price_500k) query += 'price=' + 500000 + '&';
+    if (price_350k) query += 'price=' + 350000 + '&';
+    if (price_250k) query += 'price=' + 250000 + '&';
+    if (brand_toyota) query += 'brand=Toyota&';
+    if (brand_nissan) query += 'brand=Nissan&';
+    if (brand_ford) query += 'brand=Ford&';
+    if (brand_opel) query += 'brand=Opel&';
+    if (brand_mitsubishi) query += 'brand=Mitsubishi&';
+    
+    // Remove trailing '&' if present
+    // query = query.replace(/&$/, '');
+
+    if (isNaN(intSearchInput)) {
+        fetch(query + `query=${searchInput}`)
+            .then(response => response.json())
+            .then(data => {
+                displaySearchResults(data);
+            })
+            .catch(error => console.error('Error:', error));
+    } else {
+        fetch(`/price?query=${intSearchInput}`)
+            .then(response => response.json())
+            .then(data => {
+                displaySearchResults(data);
+            })
+            .catch(error => console.error('Error:', error));
+    }
+}
+
+        //FUNCTION FOR TOYOTA CARS
+        function showToyotaCars() {
+            fetch('/database/search?query=Toyota') // Fetch cars with brand Toyota
+                .then(response => response.json())
+                .then(data => {
+                    displaySearchResults(data);
+                })
+                .catch(error => console.error('Error:', error));
+        }
+        function showOpelCars() {
+         fetch('/database/search?query=Opel')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch Opel cars. Server returned ' + response.status);
+                }
+                return response.json();
+            })
+            .then(data => {
+                displaySearchResults(data);
+            })
+            .catch(error => console.error('Error fetching Opel cars:', error));
+        }
+        function showMitsubishiCars() {
+            fetch('/database/search?query=Mitsubishi') // Fetch cars with brand Toyota
+                .then(response => response.json())
+                .then(data => {
+                    displaySearchResults(data);
+                })
+                .catch(error => console.error('Error:', error));
+        }
+        function showFordCars() {
+            fetch('/database/search?query=Ford') // Fetch cars with brand Toyota
+                .then(response => response.json())
+                .then(data => {
+                    displaySearchResults(data);
+                })
+                .catch(error => console.error('Error:', error));
+        }
+        function showNissanCars() {
+            fetch('/database/search?query=Nissan') // Fetch cars with brand Toyota
+                .then(response => response.json())
+                .then(data => {
+                    displaySearchResults(data);
+                })
+                .catch(error => console.error('Error:', error));
+        }
+        function displaylte150Cars() {
+            fetch('/database/price?query=150000') // Fetch cars with price below 150k
+            .then(response => response.json())
+            .then(data => {
+                displaySearchResults(data);
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        function displaySearchResults(results) {
+            const searchResults = document.getElementById('searchResults');
+            searchResults.innerHTML = ''
+            results.forEach(car => {
+                const carDiv = document.createElement('div');
+                carDiv.classList.add('search-result')
+                const img_div = document.createElement('div');
+                img_div.classList.add('img_div');
+                img_div.innerHTML = `<img src="./Pictures/${car.Model}.jpg" alt="Car Image" width="300" height="200">`;
+                const accessories = car.Accessories.join(', ');
+                carDiv.textContent = `Brand: ${car.Brand}\nModel: ${car.Model}\nHand: ${car.Hand}\nAccessories: ${accessories}\nPrice: ${car.Price}`;
+                searchResults.appendChild(carDiv);
+                searchResults.appendChild(img_div);
+            });
+        }
+        function showAllCars() {
+            fetch('/database/search?query=#') // Fetch cars with brand Toyota
+                .then(response => response.json())
+                .then(data => {
+                    displaySearchResults(data);
+                })
+                .catch(error => console.error('Error:', error));
+        }
+        
+        showAllCars()
+
+    </script>
+</body>
+</html>

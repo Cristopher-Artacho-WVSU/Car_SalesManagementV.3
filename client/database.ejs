@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <title>Database</title>
+
+    <style>
+        body{
+            display: grid;
+            grid-template-columns: 100px 700px 300px 400px;
+            grid-template-rows: 50px 700px 700px 200px;
+            padding: 0;
+            margin: 0;
+        }
+    .sidebar {
+      height: 100%;
+      width: 250px;
+      position: fixed;
+      top: 0px;
+      left: -250px;
+      padding-top: 35px;
+      background-color: #bebdbd;
+      transition: left 0.3s ease;
+      z-index: 3;
+    }
+    
+    .sidebar.active {
+      left: 0;
+    }
+    
+    .sidebar ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    
+    .sidebar ul li {
+      padding: 20px;
+      margin-left: 10px;
+      font-size: 18px;
+      color: white;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    
+    .sidebar ul li:hover {
+      background-color: #797979;
+      transition: 1s;
+    }
+    
+    .menu-toggle {
+      position: fixed;
+      left: 15px;
+      top: 15px;
+      cursor: pointer;
+      z-index: 3;
+    }
+    
+    .menu-toggle i {
+      font-size: 24px;
+      color: #fff;
+    }
+    
+    .sub-menu {
+      display: none;
+    }
+    
+    .sub-menu.active {
+      display: block;
+    }
+    
+    .sub-menu a {
+      display: block;
+      padding: 10px;
+      padding-right: 15px;
+      margin-top: 10px;
+      border: none;
+      color: #fff;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .sidebar ul li a {
+      color: white;
+      text-decoration: none;
+    }
+    .sidebar ul li a:hover {
+      color:#a09e9e;
+      transition: 1s;
+    }
+    #design_top{
+        grid-row: 2;
+        grid-column: 1/span 4;
+        background-color: #303030;
+    }
+    #searchResults{
+        grid-row: 3;
+        grid-column: 1/span 3;
+        padding-top: 100px;
+        font-family:Verdana, Geneva, Tahoma, sans-serif;
+        font-size: 18px;
+        padding-left: 30px;
+        
+    }
+    #searchResults img{
+
+      margin-bottom: 20px;
+      text-decoration: none;
+    }
+    
+    #navbar{
+        grid-column: 1/span 4;
+        grid-row: 1;
+        background-color: #303030;
+        text-align: center;
+        color: white;
+        padding-left: 300px;
+        padding-top: 20px;
+    }
+    #navbar a {
+        color: white;
+        text-decoration: none;
+        margin: 10px;
+        font-family: 'Roboto', sans-serif;
+        font-weight: 200; /* Thin weight */
+        font-size: 20px; /* You can adjust the font size as needed */
+        padding: 30px;
+    }
+    #searchInput{
+        margin-left: 25px;
+        height: 20px;
+        width: 200px;
+    }
+    #search_button{
+        height: 25px;
+        width: 80px;
+        font-family:Arial, Helvetica, sans-serif;
+    }
+    #patrol_top{
+        height: 280px;
+        width: 720px;
+        position: absolute;
+        right: 70px;
+        top: 300px;
+    }
+    #rental_tag{
+        font-family: 'Montserrat', sans-serif;
+        font-size: 35px;
+        text-align: center;
+        color: #fff;
+        margin-top: 75px;
+    }
+
+    #filter_div{
+      grid-row:3/span 4 ;
+      grid-column: 3;
+      padding-top: 100px;
+    }
+    #filter_div p{
+      font-family: 'Roboto', sans-serif;
+      font-size: 20px;
+      font-weight:600;
+    }
+    #filter_div input{
+      width: 20px;
+      height: 20px;
+    }
+    #filter_div label{
+      font-family:Verdana, Geneva, Tahoma, sans-serif;
+      font-size: 20px;
+    }
+    #brand_and_search_div{
+      background-color: rgb(231, 168, 51);
+      height: 90px;
+      width: 1100px;
+      position: absolute;
+      top: 675px;
+      left: 13%;
+      padding-top: 70px;
+    }
+    #brand_and_search_div a{
+      color: white;
+      text-decoration: none;
+      font-size: 20px;
+      padding-left: 30px;
+      padding-right: 30px;
+      font-family:Arial, Helvetica, sans-serif;
+      font-weight: 500;
+    }
+    #brand_and_search_div a:hover{
+      transition: 0.5s;
+      opacity: 0.5;
+    }
+
+    #display_car{
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-size: 60px;
+      font-weight: 300;
+      color: white;
+      position: absolute;
+      left:500px;
+      top:200px;
+    }
+    #rent_cost{
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-size: 50px;
+      font-weight: 500;
+      color: white;
+      position: absolute;
+      left:500px;
+      top:300px;
+
+    }
+    #rent_button{
+      width: 220px;
+      height: 60px;
+      position: absolute;
+      left:500px;
+      top:450px;
+      background-color: orange;
+      color: white;
+      font-family:Arial, Helvetica, sans-serif;
+      font-weight: 900;
+      font-size: 20px;
+      border-style: none;
+    }
+    #database_edit{
+      grid-column: 4;
+      grid-row: 3;
+      padding-top: 100px;
+    }
+    #database_edit button{
+      margin-left: 110px;
+      margin-bottom: 30px;
+      height: 50px;
+      width: 200px;
+      background-color: rgb(231, 168, 51);
+      border-style: none;
+    }
+    #database_edit a{
+      text-decoration: none;
+      color: white;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+    }
+    </style>
+
+
+</head>
+
+<body>
+
+    <div class="sidebar" id="sidebar">
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="#">Rent</a></li>
+          <li><a href="#">Booking</a></li>
+          <li onmouseenter="toggleSubMenu()" onmouseleave="hideSubMenu()">
+            <a href="database">Database</a>
+            <div class="sub-menu" id="carSubMenu">
+                <a>Mitsubishi</a>
+                <a>Ford</a>
+                <a>Opel</a>
+                <a>Nissan</a>
+                <a>Toyota</a>
+            </div>
+          </li>
+          <li><a href="#">FAQs</a></li>
+          <li><a href="#">Branches</a></li>
+        </ul>
+      </div>
+    
+    <div class="menu-toggle" onclick="toggleSidebar()">
+        <i class="fas fa-bars thin-menu-icon"></i>
+      </div>
+
+      
+      
+      <div id="navbar">
+        <a href="">Homepage</a>
+        <a href="">About</a>
+        <a href="">Services</a>
+        <a href="">Contact</a>  
+      </div>
+
+      
+      
+      
+      
+      <div id="design_top">
+        <img id="patrol_top" src="Pictures/Nissan_Patrol.png" alt="">
+        <p id="rental_tag">Unleash the Journey with Our Premier Rental Experience!</p>
+        <p id="display_car">Nissan Patrol</p>
+        <p id="rent_cost">50$/DAY</p>
+        <button id="rent_button">RENT NOW!</button>
+      </div>
+      
+
+
+
+
+      <div id="searchResults">
+
+      </div>
+    
+    
+    
+    
+    
+    <div id="filter_div">
+      <p>Hand:</p>
+      <label><input type="checkbox" id="hand_2nd_hand"> Hand: 2nd hand</label><br>
+      <label><input type="checkbox" id="hand_new"> Hand: New</label><br>
+      <p>Prices:</p>
+      <label><input type="checkbox" id="price_500k"> Price: 500k and below</label><br>
+      <label><input type="checkbox" id="price_350k"> Price: 350k and below</label><br>
+      <label><input type="checkbox" id="price_250k"> Price: 250k and below</label><br>
+      <p>Brand:</p>
+      <label><input type="checkbox" id="brand_toyota"> Brand: Toyota</label><br>
+      <label><input type="checkbox" id="brand_nissan"> Brand: Nissan</label><br>
+      <label><input type="checkbox" id="brand_ford"> Brand: Ford</label><br>
+      <label><input type="checkbox" id="brand_opel"> Brand: Opel</label><br>
+      <label><input type="checkbox" id="brand_mitsubishi"> Brand: Mitsubishi</label>
+    </div>
+    
+
+
+    <div id="brand_and_search_div">
+      <a href="#" onclick="showToyotaCars()">Toyota</a>
+      <a href="#" onclick="showOpelCars()">Opel</a>
+      <a href="#" onclick="showMitsubishiCars()">Mitsubishi</a>
+      <a href="#" onclick="showNissanCars()">Nissan</a>
+      <a href="#" onclick="showFordCars()">Ford</a>
+      <a href="#" onclick="showAllCars()">Show All</a>
+      <input type="text" id="searchInput" placeholder="Search">
+      <button id="search_button" onclick="searchbar()">Search</button>
+    </div>
+
+
+    <div id="database_edit">
+      <button><a href="updatecars">Update Cars</button>
+        <button><a href="deletecars">Delete Cars</button>
+          <button><a href="addcars">Add Cars</a></button>
+    </div>
+
+
+    <script>
+ function searchbar() {
+    const searchInput = document.getElementById('searchInput').value;
+    const intSearchInput = parseInt(searchInput);
+    console.log(intSearchInput);
+    
+    let query = 'database/search?';
+
+    const hand_2nd_hand = document.getElementById('hand_2nd_hand').checked;
+    const hand_new = document.getElementById('hand_new').checked;
+    const price_500k = document.getElementById('price_500k').checked;
+    const price_350k = document.getElementById('price_350k').checked;
+    const price_250k = document.getElementById('price_250k').checked;
+    const brand_toyota = document.getElementById('brand_toyota').checked;
+    const brand_nissan = document.getElementById('brand_nissan').checked;
+    const brand_ford = document.getElementById('brand_ford').checked;
+    const brand_opel = document.getElementById('brand_opel').checked;
+    const brand_mitsubishi = document.getElementById('brand_mitsubishi').checked;
+
+    if (hand_2nd_hand) query += 'hand=2nd&';
+    if (hand_new) query += 'hand=New&';
+
+    if (price_500k) query += 'price=' + 500000 + '&';
+    if (price_350k) query += 'price=' + 350000 + '&';
+    if (price_250k) query += 'price=' + 250000 + '&';
+    if (brand_toyota) query += 'brand=Toyota&';
+    if (brand_nissan) query += 'brand=Nissan&';
+    if (brand_ford) query += 'brand=Ford&';
+    if (brand_opel) query += 'brand=Opel&';
+    if (brand_mitsubishi) query += 'brand=Mitsubishi&';
+    
+    // Remove trailing '&' if present
+    // query = query.replace(/&$/, '');
+
+    if (isNaN(intSearchInput)) {
+        fetch(query + `query=${searchInput}`)
+            .then(response => response.json())
+            .then(data => {
+                displaySearchResults(data);
+            })
+            .catch(error => console.error('Error:', error));
+    } else {
+        fetch(`/price?query=${intSearchInput}`)
+            .then(response => response.json())
+            .then(data => {
+                displaySearchResults(data);
+            })
+            .catch(error => console.error('Error:', error));
+    }
+}
+
+    function toggleSidebar() {
+      var sidebar = document.getElementById("sidebar");
+      sidebar.classList.toggle('active');
+    }
+
+    function toggleSubMenu() {
+      var subMenu = document.getElementById("carSubMenu");
+      subMenu.classList.toggle('active');
+    }
+
+    function hideSubMenu() {
+    var subMenu = document.getElementById("carSubMenu");
+    subMenu.classList.remove('active'); // Add inactive class to hide submenu
+    subMenu.classList.add('inactive')
+}
+
+      //FUNCTION FOR TOYOTA CARS
+    function showToyotaCars() {
+      fetch('/database/search?query=Toyota') // Fetch cars with brand Toyota
+        .then(response => response.json())
+        .then(data => {
+            displaySearchResults(data);
+          })
+        .catch(error => console.error('Error:', error));
+    }
+      
+    function showOpelCars() {
+       fetch('/database/search?query=Opel')
+        .then(response => {
+            if (!response.ok) {
+              throw new Error('Failed to fetch Opel cars. Server returned ' + response.status);
+            }
+        return response.json();
+        })
+            .then(data => {
+                displaySearchResults(data);
+            })
+            .catch(error => console.error('Error fetching Opel cars:', error));
+        }
+        function showMitsubishiCars() {
+            fetch('/database/search?query=Mitsubishi') // Fetch cars with brand Toyota
+                .then(response => response.json())
+                .then(data => {
+                    displaySearchResults(data);
+                })
+                .catch(error => console.error('Error:', error));
+        }
+        function showFordCars() {
+            fetch('/database/search?query=Ford') // Fetch cars with brand Toyota
+                .then(response => response.json())
+                .then(data => {
+                    displaySearchResults(data);
+                })
+                .catch(error => console.error('Error:', error));
+        }
+        function showNissanCars() {
+            fetch('/database/search?query=Nissan') // Fetch cars with brand Toyota
+                .then(response => response.json())
+                .then(data => {
+                    displaySearchResults(data);
+                })
+                .catch(error => console.error('Error:', error));
+        }
+        function displaylte150Cars() {
+            fetch('/database/price?query=150000') // Fetch cars with price below 150k
+            .then(response => response.json())
+            .then(data => {
+                displaySearchResults(data);
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        function displaySearchResults(results) {
+    const searchResults = document.getElementById('searchResults');
+    searchResults.innerHTML = '';
+    results.forEach(car => {
+        const carContainer = document.createElement('div');
+        carContainer.classList.add('car-container');
+
+        const carDetails = document.createElement('div');
+        carDetails.classList.add('car-details');
+        carDetails.innerHTML = `
+            <strong>Brand:</strong> ${car.Brand}<br>
+            <strong>Model:</strong> ${car.Model}<br>
+            <strong>Hand:</strong> ${car.Hand}<br>
+            <strong>Accessories:</strong> ${car.Accessories.join(', ')}<br>
+            <strong>Price:</strong> ${car.Price} <br>
+            <a href="/database/${car._id}"> See More >></a>
+        `;
+
+        const imgDiv = document.createElement('div');
+        imgDiv.classList.add('img-div');
+        imgDiv.innerHTML = `
+            <img src="./Pictures/${car.Model}.jpg" alt="Car Image" width="350" height="200">
+            
+        `;
+        const space = document.createElement('div');
+        space.classList.add('spacing');
+
+        carContainer.appendChild(carDetails);
+        carContainer.appendChild(imgDiv);
+        carContainer.append(space)
+        searchResults.appendChild(carContainer);
+    });
+}
+        function showAllCars() {
+            fetch('/database/search?query=#') // Fetch cars with brand Toyota
+                .then(response => response.json())
+                .then(data => {
+                    displaySearchResults(data);
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        showAllCars()
+    </script>
+</body>
+</html>
