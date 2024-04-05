@@ -206,11 +206,6 @@ app.get('/database/price', (req, res) => {
         });
 });
 
-
-
-
-
-
 // Set up route handler for the root URL ("/")
 app.get('/', (req, res) => {
     // Render the "index" view/template
